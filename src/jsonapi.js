@@ -39,17 +39,18 @@ const apiWillDelete = createAction(API_WILL_DELETE);
 const apiDeleted = createAction(API_DELETED);
 const apiDeleteFailed = createAction(API_DELETE_FAILED);
 
-export const createResource = (resource) => {
+export const createResource = (resource, config = {}) => {
   return (dispatch, getState) => {
     dispatch(apiWillCreate(resource));
 
     const { axiosConfig } = getState().api.endpoint;
     const options = {
-      ... axiosConfig,
       method: 'POST',
       data: JSON.stringify({
         data: resource
-      })
+      }),
+      ...axiosConfig,
+      ...config
     };
 
     return new Promise((resolve, reject) => {
@@ -113,7 +114,7 @@ export const readEndpoint = (endpoint, {
   };
 };
 
-export const updateResource = (resource) => {
+export const updateResource = (resource, config = {}) => {
   return (dispatch, getState) => {
     dispatch(apiWillUpdate(resource));
 
@@ -121,11 +122,12 @@ export const updateResource = (resource) => {
     const endpoint = `${resource.type}/${resource.id}`;
 
     const options = {
-      ... axiosConfig,
       method: 'PATCH',
       data: {
         data: resource
-      }
+      },
+      ...axiosConfig,
+      ...config
     };
 
     return new Promise((resolve, reject) => {
@@ -145,7 +147,7 @@ export const updateResource = (resource) => {
   };
 };
 
-export const deleteResource = (resource) => {
+export const deleteResource = (resource, config = {}) => {
   return (dispatch, getState) => {
     dispatch(apiWillDelete(resource));
 
@@ -153,8 +155,9 @@ export const deleteResource = (resource) => {
     const endpoint = `${resource.type}/${resource.id}`;
 
     const options = {
-      ... axiosConfig,
-      method: 'DELETE'
+      method: 'DELETE',
+      ...axiosConfig,
+      ...config
     };
 
     return new Promise((resolve, reject) => {
