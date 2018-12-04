@@ -94,7 +94,7 @@ export const readEndpoint = (endpoint, {
     const { axiosConfig } = getState().api.endpoint;
 
     return new Promise((resolve, reject) => {
-      apiRequest(endpoint, {...axiosConfig, ...config})
+      apiRequest(endpoint, { ...axiosConfig, ...config })
         .then(json => {
           dispatch(apiRead({ endpoint, options, ...json }));
 
