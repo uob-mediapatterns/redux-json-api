@@ -87,14 +87,14 @@ export const readEndpoint = (endpoint, {
   options = {
     indexLinks: undefined,
   }
-} = {}) => {
+} = {}, config) => {
   return (dispatch, getState) => {
     dispatch(apiWillRead(endpoint));
 
     const { axiosConfig } = getState().api.endpoint;
 
     return new Promise((resolve, reject) => {
-      apiRequest(endpoint, axiosConfig)
+      apiRequest(endpoint, {...axiosConfig, ...config})
         .then(json => {
           dispatch(apiRead({ endpoint, options, ...json }));
 
